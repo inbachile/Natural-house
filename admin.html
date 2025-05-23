@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel Admin - INBA 2025</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+    }
+    .admin-panel {
+      max-width: 500px;
+      margin: 50px auto;
+      background: white;
+      padding: 2em;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input[type="text"], input[type="password"], textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 1em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #butacasVendidas {
+      margin-top: 2em;
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-panel">
+    <h2>Panel de Administración</h2>
+    <div id="loginForm">
+      <input type="text" id="adminUser" placeholder="Usuario" />
+      <input type="password" id="adminPass" placeholder="Contraseña" />
+      <button onclick="iniciarSesion()">Ingresar</button>
+    </div>
+
+    <div id="panelControl" style="display: none;">
+      <h3>Butacas Vendidas</h3>
+      <textarea id="butacasVendidas" rows="6" style="width:100%;"></textarea>
+      <button onclick="guardarButacas()">Guardar</button>
+    </div>
+  </div>
+
+  <script>
+    function iniciarSesion() {
+      const user = document.getElementById('adminUser').value;
+      const pass = document.getElementById('adminPass').value;
+      if (user === 'admin' && pass === 'inba2025') {
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('panelControl').style.display = 'block';
+        fetch('butacas.json')
+          .then(r => r.json())
+          .then(data => {
+            document.getElementById('butacasVendidas').value = data.join(", ");
+          });
+      } else {
+        alert("Credenciales incorrectas.");
+      }
+    }
+
+    function guardarButacas() {
+      const data = document.getElementById('butacasVendidas').value
+        .split(',')
+        .map(e => e.trim())
+        .filter(e => e);
+
+      fetch('guardar.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+        .then(res => res.text())
+        .then(resp => alert(resp));
+    }
+  </script>
+</body>
+</html>
