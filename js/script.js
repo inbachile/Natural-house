@@ -56,7 +56,7 @@ function actualizarSeleccion() {
     const detalles = lista.map(id => {
         const fila = id[0];
         const tipo = ["A", "B", "C"].includes(fila) ? "VIP" : "General";
-        const precio = tipo === "VIP" ? 15000 : 10000;
+        const precio = tipo === "VIP" ? 27000 : 20000;
         total += precio;
         return `${id} (${tipo} - $${precio})`;
     });
@@ -77,7 +77,7 @@ function enviarReserva() {
     const detalles = lista.map(id => {
         const fila = id[0];
         const tipo = ["A", "B", "C"].includes(fila) ? "VIP" : "General";
-        const precio = tipo === "VIP" ? 15000 : 10000;
+        const precio = tipo === "VIP" ? 27000 : 20000;
         total += precio;
         return `${id} (${tipo})`;
     });
